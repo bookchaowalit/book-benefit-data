@@ -1,0 +1,42 @@
+{
+  "id": "govuk-housing-benefit",
+  "product": "book-benefit-data",
+  "domain": "benefit",
+  "schema_version": "benefit.v2",
+  "fetch_url": "https://www.gov.uk/api/content/housing-benefit",
+  "source_url": "https://www.gov.uk/housing-benefit",
+  "access": "govuk-api",
+  "content_type": "application/json",
+  "category": "housing-support",
+  "provider": "GOV.UK / Department for Work and Pensions",
+  "title": "Housing Benefit",
+  "required_markers": [
+    "housing benefit",
+    "eligible"
+  ],
+  "generic_html": true,
+  "eligible_countries": [
+    "GB"
+  ],
+  "eligibility_text": "GOV.UK Housing Benefit guidance; local authority, age, income, housing and other conditions apply.",
+  "value_kind": "variable",
+  "value_amount": null,
+  "value_currency": null,
+  "value_guaranteed": null,
+  "cost_notes": "The adapter records only public programme metadata. Confirm current eligibility, price, availability and terms at the official source.",
+  "normalized_terms": {
+    "jurisdiction": "United Kingdom",
+    "beneficiary_group": "People who meet the current Housing Benefit conditions",
+    "eligibility_evidence": "Use the official local authority or GOV.UK eligibility assessment.",
+    "renewal_rule": "Entitlement is assessed under current benefit and housing circumstances."
+  },
+  "enabled": true,
+  "permission_status": "reviewed-public-read",
+  "reviewed_at": "2026-09-08",
+  "permission_evidence": "https://www.gov.uk/robots.txt",
+  "owner": "bookchaowalit",
+  "min_interval_seconds": 21600,
+  "retention": "private local raw archive; operational retention; no automatic deletion",
+  "use": "public benefit metadata for personal discovery; no source-body republication",
+  "record_kind": "program"
+}

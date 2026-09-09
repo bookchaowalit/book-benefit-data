@@ -1,0 +1,21 @@
+{
+  "id": "govuk-universal-credit",
+  "product": "book-benefit-data",
+  "domain": "benefit",
+  "schema_version": "benefit.v2",
+  "fetch_url": "https://www.gov.uk/api/content/universal-credit",
+  "source_url": "https://www.gov.uk/universal-credit",
+  "access": "govuk-api",
+  "content_type": "application/json",
+  "category": "public-assistance",
+  "record_kind": "program",
+  "provider": "GOV.UK / DWP",
+  "enabled": true,
+  "permission_status": "reviewed-public-read",
+  "reviewed_at": "2026-09-07",
+  "permission_evidence": "https://www.gov.uk/help/reuse-govuk-content",
+  "owner": "bookchaowalit",
+  "min_interval_seconds": 21600,
+  "retention": "private local raw archive; operational retention; no automatic deletion",
+  "use": "public program metadata for personal discovery; no source-body republication"
+}

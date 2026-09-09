@@ -1,0 +1,42 @@
+{
+  "id": "govuk-court-fee-remission",
+  "product": "book-benefit-data",
+  "domain": "benefit",
+  "schema_version": "benefit.v2",
+  "fetch_url": "https://www.gov.uk/api/content/get-help-with-court-fees",
+  "source_url": "https://www.gov.uk/get-help-with-court-fees",
+  "access": "govuk-api",
+  "content_type": "application/json",
+  "category": "fee-waiver",
+  "provider": "GOV.UK / HM Courts & Tribunals Service",
+  "title": "Help paying court and tribunal fees",
+  "required_markers": [
+    "help paying",
+    "court and tribunal fees"
+  ],
+  "generic_html": true,
+  "eligible_countries": [
+    "GB"
+  ],
+  "eligibility_text": "GOV.UK help with court and tribunal fees; fee type, income, benefits and proceeding conditions apply.",
+  "value_kind": "variable",
+  "value_amount": null,
+  "value_currency": null,
+  "value_guaranteed": null,
+  "cost_notes": "The adapter records only public programme metadata. Confirm current eligibility, price, availability and terms at the official source.",
+  "normalized_terms": {
+    "jurisdiction": "United Kingdom",
+    "beneficiary_group": "People who meet the current fee-remission financial or benefit conditions",
+    "eligibility_evidence": "Apply through the official fee-remission process with financial evidence where required.",
+    "renewal_rule": "Eligibility is considered for each fee or proceeding under current rules."
+  },
+  "enabled": true,
+  "permission_status": "reviewed-public-read",
+  "reviewed_at": "2026-09-08",
+  "permission_evidence": "https://www.gov.uk/robots.txt",
+  "owner": "bookchaowalit",
+  "min_interval_seconds": 21600,
+  "retention": "private local raw archive; operational retention; no automatic deletion",
+  "use": "public benefit metadata for personal discovery; no source-body republication",
+  "record_kind": "program"
+}

@@ -1,0 +1,42 @@
+{
+  "id": "govuk-disabled-students-allowance",
+  "product": "book-benefit-data",
+  "domain": "benefit",
+  "schema_version": "benefit.v2",
+  "fetch_url": "https://www.gov.uk/api/content/disabled-students-allowance-dsa",
+  "source_url": "https://www.gov.uk/disabled-students-allowance-dsa",
+  "access": "govuk-api",
+  "content_type": "application/json",
+  "category": "accessibility",
+  "provider": "GOV.UK / Student Finance England",
+  "title": "Disabled Students' Allowance",
+  "required_markers": [
+    "disabled students",
+    "allowance"
+  ],
+  "generic_html": true,
+  "eligible_countries": [
+    "GB"
+  ],
+  "eligibility_text": "GOV.UK Disabled Students' Allowance guidance; course, residency, disability evidence and assessment conditions apply.",
+  "value_kind": "in_kind",
+  "value_amount": null,
+  "value_currency": null,
+  "value_guaranteed": null,
+  "cost_notes": "The adapter records only public programme metadata. Confirm current eligibility, price, availability and terms at the official source.",
+  "normalized_terms": {
+    "jurisdiction": "United Kingdom",
+    "beneficiary_group": "Higher-education students with a disability, health condition or learning difficulty",
+    "eligibility_evidence": "Complete the official needs assessment and provide the required evidence.",
+    "renewal_rule": "Support is reviewed under the current course and disability-related needs rules."
+  },
+  "enabled": true,
+  "permission_status": "reviewed-public-read",
+  "reviewed_at": "2026-09-08",
+  "permission_evidence": "https://www.gov.uk/robots.txt",
+  "owner": "bookchaowalit",
+  "min_interval_seconds": 21600,
+  "retention": "private local raw archive; operational retention; no automatic deletion",
+  "use": "public benefit metadata for personal discovery; no source-body republication",
+  "record_kind": "program"
+}

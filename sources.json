@@ -1,0 +1,17 @@
+{
+  "domain": "benefit",
+  "enabled_sources": [
+    "govuk-universal-credit",
+    "thaigov-state-welfare-2569",
+    "thaigov-water-support-2569",
+    "govuk-housing-benefit",
+    "nhs-healthcare-travel-member-benefit",
+    "govuk-disabled-students-allowance",
+    "govuk-court-fee-remission"
+  ],
+  "enabled_category_capabilities": ["public-assistance", "utility-support", "housing-support", "member-benefit", "accessibility", "fee-waiver"],
+  "network_enabled": true,
+  "permission_status": "reviewed-public-read",
+  "policy_file": "src/book_benefit_data/source.json",
+  "notes": "Seven manually invoked official sources. Six-hour minimum interval per source. No schedule or remote writes."
+}

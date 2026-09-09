@@ -1,0 +1,42 @@
+{
+  "id": "nhs-healthcare-travel-member-benefit",
+  "product": "book-benefit-data",
+  "domain": "benefit",
+  "schema_version": "benefit.v2",
+  "fetch_url": "https://www.nhs.uk/nhs-services/help-with-health-costs/healthcare-travel-costs-scheme-htcs/",
+  "source_url": "https://www.nhs.uk/nhs-services/help-with-health-costs/healthcare-travel-costs-scheme-htcs/",
+  "access": "html",
+  "content_type": "text/html",
+  "category": "member-benefit",
+  "provider": "NHS",
+  "title": "Healthcare Travel Costs Scheme",
+  "required_markers": [
+    "healthcare travel costs",
+    "scheme"
+  ],
+  "generic_html": true,
+  "eligible_countries": [
+    "GB"
+  ],
+  "eligibility_text": "NHS Healthcare Travel Costs Scheme; qualifying treatment, benefits and travel evidence are required.",
+  "value_kind": "cash",
+  "value_amount": null,
+  "value_currency": null,
+  "value_guaranteed": null,
+  "cost_notes": "The adapter records only public programme metadata. Confirm current eligibility, price, availability and terms at the official source.",
+  "normalized_terms": {
+    "jurisdiction": "United Kingdom",
+    "beneficiary_group": "Eligible NHS patients receiving qualifying specialist treatment",
+    "eligibility_evidence": "Provide the official evidence of entitlement and travel costs required by the NHS.",
+    "renewal_rule": "Claim rules and qualifying treatment are checked for each journey or appointment."
+  },
+  "enabled": true,
+  "permission_status": "reviewed-public-read",
+  "reviewed_at": "2026-09-08",
+  "permission_evidence": "https://www.nhs.uk/robots.txt",
+  "owner": "bookchaowalit",
+  "min_interval_seconds": 21600,
+  "retention": "private local raw archive; operational retention; no automatic deletion",
+  "use": "public benefit metadata for personal discovery; no source-body republication",
+  "record_kind": "program"
+}
