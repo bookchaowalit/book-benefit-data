@@ -3,9 +3,10 @@ import argparse
 import json
 import re
 import sys
-from datetime import date, datetime, timezone, timedelta
+from datetime import date, datetime, timedelta, timezone
 from importlib.resources import files
 from urllib.parse import urlsplit
+
 from jsonschema import Draft202012Validator, FormatChecker
 
 
@@ -72,6 +73,17 @@ def validate(payload):
     return payload
 
 
+def availability_state(item, now):
+    """Return True/False when a v2 availability window is explicit, else None."""
+    availability = item.get("availability")
+    if not availability or availability["kind"] == "unknown" or availability["starts_at"] is None:
+        return None
+    if timestamp(availability["starts_at"]) > now:
+        return False
+    ends_at = availability["ends_at"]
+    return ends_at is None or timestamp(ends_at) > now
+
+
 def filter_items(payload, as_of, open_only=False, query="", max_age_hours=72):
     validate(payload)
     now = timestamp(as_of)
@@ -84,7 +96,12 @@ def filter_items(payload, as_of, open_only=False, query="", max_age_hours=72):
         if open_only:
             deadline = item["deadline"]
             checked = timestamp(item["provenance"]["checked_at"])
-            if item["status"] != "open" or deadline["kind"] == "unknown":
+            if item["status"] != "open":
+                continue
+            available = availability_state(item, now)
+            # A started continuous/scheduled benefit with explicit availability
+            # metadata is open even without an application deadline.
+            if available is False or (deadline["kind"] == "unknown" and available is not True):
                 continue
             if checked > now or now - checked > timedelta(hours=max_age_hours):
                 continue
