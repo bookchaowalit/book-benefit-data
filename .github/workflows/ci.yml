@@ -41,3 +41,5 @@ jobs:
           book-benefit-data contract --version v2 > /dev/null
           book-benefit-data validate src/book_benefit_data/demo.json
           book-benefit-data demo --open-only > /dev/null
+          book-benefit-data validate src/book_benefit_data/demo-v2.json
+          book-benefit-data demo --version v2 --open-only > /dev/null

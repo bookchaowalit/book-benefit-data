@@ -64,4 +64,41 @@ class ContractTests(unittest.TestCase):
             self.assertEqual(main(["demo", "--open-only"]), 0)
 
 
+class DemoV2Tests(unittest.TestCase):
+    def ids(self, as_of, max_age_hours=72):
+        payload = resource("demo-v2.json")
+        return [item["id"] for item in filter_items(payload, as_of, open_only=True, max_age_hours=max_age_hours)]
+
+    def test_v2_demo_is_a_valid_v2_fixture(self):
+        payload = validate(resource("demo-v2.json"))
+        self.assertEqual((payload["schema_version"], payload["data_status"]), ("benefit.v2", "fixture"))
+        kinds = {item["availability"]["kind"] for item in payload["items"]}
+        self.assertEqual(kinds, {"continuous", "scheduled", "fixed_window", "unknown"})
+
+    def test_open_only_follows_availability_windows(self):
+        self.assertEqual(self.ids("2026-09-07T00:00:00Z"), ["benefit-v2-demo-continuous"])
+
+    def test_scheduled_start_is_an_instant_not_a_local_date(self):
+        # starts_at 2026-10-01T00:00+07:00 is 2026-09-30T17:00Z.
+        cases = {
+            "2026-09-30T16:59:59Z": ["benefit-v2-demo-continuous"],
+            "2026-09-30T17:00:00Z": ["benefit-v2-demo-continuous", "benefit-v2-demo-scheduled"],
+            "2026-09-30T23:59:59+07:00": ["benefit-v2-demo-continuous"],
+            "2026-10-01T00:00:00+07:00": ["benefit-v2-demo-continuous", "benefit-v2-demo-scheduled"],
+            "2026-09-30T13:00:00-04:00": ["benefit-v2-demo-continuous", "benefit-v2-demo-scheduled"],
+        }
+        for as_of, expected in cases.items():
+            with self.subTest(as_of=as_of):
+                self.assertEqual(self.ids(as_of, max_age_hours=24 * 60), expected)
+
+    def test_cli_demo_version_flag(self):
+        with patch("sys.stdout") as out:
+            self.assertEqual(main(["demo", "--version", "v2", "--open-only"]), 0)
+        printed = "".join(call.args[0] for call in out.write.call_args_list)
+        self.assertIn("benefit-v2-demo-continuous", printed)
+        self.assertNotIn("benefit-v2-demo-ended", printed)
+        with patch("sys.stdout"), patch("sys.stderr"), self.assertRaises(SystemExit):
+            main(["demo", "--version", "v3"])
+
+
 if __name__ == "__main__": unittest.main()

@@ -1,0 +1,196 @@
+{
+  "schema_version": "benefit.v2",
+  "source": "book-benefit-data",
+  "retrieved_at": "2026-09-07T00:00:00Z",
+  "data_status": "fixture",
+  "items": [
+    {
+      "id": "benefit-v2-demo-continuous",
+      "title": "Synthetic continuous monthly support",
+      "record_kind": "program",
+      "category": "public-assistance",
+      "source_url": "https://example.org/benefit/benefit-v2-demo-continuous",
+      "provider": "Synthetic provider",
+      "status": "open",
+      "deadline": {
+        "kind": "unknown",
+        "at": null
+      },
+      "availability": {
+        "kind": "continuous",
+        "starts_at": "2026-01-01T00:00:00Z",
+        "ends_at": null
+      },
+      "eligible_countries": [],
+      "eligibility_text": "Unknown; this synthetic example does not establish eligibility.",
+      "value": {
+        "kind": "unknown",
+        "amount": null,
+        "currency": null,
+        "guaranteed": null
+      },
+      "cost": {
+        "fee_amount": null,
+        "currency": null,
+        "auto_renewal": null,
+        "notes": "Unknown; no claim of zero cost."
+      },
+      "terms": {
+        "jurisdiction": "Synthetic example; verify official terms before use.",
+        "beneficiary_group": "Synthetic example; verify official terms before use.",
+        "eligibility_evidence": "Synthetic example; verify official terms before use.",
+        "renewal_rule": "Synthetic example; verify official terms before use."
+      },
+      "related_records": [],
+      "provenance": {
+        "evidence_kind": "fixture",
+        "source_id": "synthetic-fixture",
+        "source_record_id": "benefit-v2-demo-continuous",
+        "checked_at": "2026-09-07T00:00:00Z",
+        "raw_object_key": null,
+        "bronze_manifest_key": null
+      }
+    },
+    {
+      "id": "benefit-v2-demo-scheduled",
+      "title": "Synthetic scheduled utility credit (not started)",
+      "record_kind": "program",
+      "category": "utility-support",
+      "source_url": "https://example.org/benefit/benefit-v2-demo-scheduled",
+      "provider": "Synthetic provider",
+      "status": "open",
+      "deadline": {
+        "kind": "unknown",
+        "at": null
+      },
+      "availability": {
+        "kind": "scheduled",
+        "starts_at": "2026-10-01T00:00:00+07:00",
+        "ends_at": "2027-09-30T23:59:59+07:00"
+      },
+      "eligible_countries": [],
+      "eligibility_text": "Unknown; this synthetic example does not establish eligibility.",
+      "value": {
+        "kind": "unknown",
+        "amount": null,
+        "currency": null,
+        "guaranteed": null
+      },
+      "cost": {
+        "fee_amount": null,
+        "currency": null,
+        "auto_renewal": null,
+        "notes": "Unknown; no claim of zero cost."
+      },
+      "terms": {
+        "jurisdiction": "Synthetic example; verify official terms before use.",
+        "beneficiary_group": "Synthetic example; verify official terms before use.",
+        "eligibility_evidence": "Synthetic example; verify official terms before use.",
+        "renewal_rule": "Synthetic example; verify official terms before use."
+      },
+      "related_records": [],
+      "provenance": {
+        "evidence_kind": "fixture",
+        "source_id": "synthetic-fixture",
+        "source_record_id": "benefit-v2-demo-scheduled",
+        "checked_at": "2026-09-07T00:00:00Z",
+        "raw_object_key": null,
+        "bronze_manifest_key": null
+      }
+    },
+    {
+      "id": "benefit-v2-demo-ended",
+      "title": "Synthetic fixed-window fee waiver (ended)",
+      "record_kind": "program",
+      "category": "fee-waiver",
+      "source_url": "https://example.org/benefit/benefit-v2-demo-ended",
+      "provider": "Synthetic provider",
+      "status": "open",
+      "deadline": {
+        "kind": "unknown",
+        "at": null
+      },
+      "availability": {
+        "kind": "fixed_window",
+        "starts_at": "2026-01-01T00:00:00Z",
+        "ends_at": "2026-09-01T00:00:00Z"
+      },
+      "eligible_countries": [],
+      "eligibility_text": "Unknown; this synthetic example does not establish eligibility.",
+      "value": {
+        "kind": "unknown",
+        "amount": null,
+        "currency": null,
+        "guaranteed": null
+      },
+      "cost": {
+        "fee_amount": null,
+        "currency": null,
+        "auto_renewal": null,
+        "notes": "Unknown; no claim of zero cost."
+      },
+      "terms": {
+        "jurisdiction": "Synthetic example; verify official terms before use.",
+        "beneficiary_group": "Synthetic example; verify official terms before use.",
+        "eligibility_evidence": "Synthetic example; verify official terms before use.",
+        "renewal_rule": "Synthetic example; verify official terms before use."
+      },
+      "related_records": [],
+      "provenance": {
+        "evidence_kind": "fixture",
+        "source_id": "synthetic-fixture",
+        "source_record_id": "benefit-v2-demo-ended",
+        "checked_at": "2026-09-07T00:00:00Z",
+        "raw_object_key": null,
+        "bronze_manifest_key": null
+      }
+    },
+    {
+      "id": "benefit-v2-demo-unknown",
+      "title": "Synthetic benefit with unknown availability",
+      "record_kind": "program",
+      "category": "public-assistance",
+      "source_url": "https://example.org/benefit/benefit-v2-demo-unknown",
+      "provider": "Synthetic provider",
+      "status": "open",
+      "deadline": {
+        "kind": "unknown",
+        "at": null
+      },
+      "availability": {
+        "kind": "unknown",
+        "starts_at": null,
+        "ends_at": null
+      },
+      "eligible_countries": [],
+      "eligibility_text": "Unknown; this synthetic example does not establish eligibility.",
+      "value": {
+        "kind": "unknown",
+        "amount": null,
+        "currency": null,
+        "guaranteed": null
+      },
+      "cost": {
+        "fee_amount": null,
+        "currency": null,
+        "auto_renewal": null,
+        "notes": "Unknown; no claim of zero cost."
+      },
+      "terms": {
+        "jurisdiction": "Synthetic example; verify official terms before use.",
+        "beneficiary_group": "Synthetic example; verify official terms before use.",
+        "eligibility_evidence": "Synthetic example; verify official terms before use.",
+        "renewal_rule": "Synthetic example; verify official terms before use."
+      },
+      "related_records": [],
+      "provenance": {
+        "evidence_kind": "fixture",
+        "source_id": "synthetic-fixture",
+        "source_record_id": "benefit-v2-demo-unknown",
+        "checked_at": "2026-09-07T00:00:00Z",
+        "raw_object_key": null,
+        "bronze_manifest_key": null
+      }
+    }
+  ]
+}

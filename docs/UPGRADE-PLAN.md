@@ -7,7 +7,6 @@ Current state: **7/10** (pass 1: 5 -> 7; pass 2: 7, consumer-facing CLI fix). Of
 - P0: Push this branch and confirm the new GitHub Actions `CI` workflow is green on both Python versions.
 - P1: Strengthen drift markers for `nhs-healthcare-travel-member-benefit`, `govuk-disabled-students-allowance`, `govuk-court-fee-remission` — their `required_markers` are only fragments of the title, so a challenge or error page that repeats the title would pass. Pick body phrases from a captured page (needs a reviewed live capture; not done offline).
 - P1: Replace the copy of `cli.py`/`capture.py` scaffolding shared by the sibling `book-*-data` repos with the shared runtime package once it is independently installable (README gate 3).
-- P1: Expose `availability` in `demo` fixtures (a v2 demo) so `--open-only` behaviour for continuous benefits is visible without live capture.
 - P2: Split the Thai welfare/water adapters out of the monolithic `normalize` into per-source functions with their own fixtures.
 - P2: Add a live-capture smoke job only behind an explicit manual trigger and reviewed source permission (never on push).
 
@@ -31,3 +30,11 @@ Current state: **7/10** (pass 1: 5 -> 7; pass 2: 7, consumer-facing CLI fix). Of
 - Drift guard: the HTML text extractor now also ignores `<noscript>` and `<svg>` (matching
   the sibling creator/deal/learning/mobility/paid-study/partnership/startup adapters), so
   markers hidden there cannot pass a challenge page; `tests/test_text_extraction.py`.
+
+## Done in this pass (pass 3)
+
+- Score: 7 -> 7.5.
+- P1 done: `demo --version v2` replays new `demo-v2.json` (continuous, scheduled-not-started, ended and unknown availability windows) so `--open-only` behaviour for continuous benefits is visible offline; tests pin the scheduled start as an instant (2026-10-01 00:00 +07:00 = 2026-09-30T17:00Z); CI smoke and README updated.
+- Shared `cli.py` (same edit in all 13 sibling copies): `validate` now rejects NaN, ±Infinity and overflowing literals such as `1e400` (Python's json turns them into non-finite floats that JSON Schema `number` accepted); `timestamp` normalises fractional seconds so Python 3.10 accepts the same RFC3339 values as 3.11+ (it rejected e.g. `.1Z`) and only ASCII digits match; a trailing-dot `example.org.` host can no longer be claimed `live`.
+- `tests/test_shared_cli.py` (byte-identical in all 13 repos) pins this repo's `cli.py` sha256 (three variants: base, +`contract --version`, +benefit availability) so a one-repo edit fails CI, and covers the fixes above across UTC/+07:00/-04:00 offsets. To change `cli.py`: edit every copy of the variant, then update `CLI_SHA256` in all 13 copies of the test.
+- Not done (needs a reviewed live capture, so left blocked): stronger drift markers and any page-phrase extraction; no page phrases were invented.

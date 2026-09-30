@@ -28,6 +28,7 @@ python -m pip install -e .
 book-benefit-data contract              # v1 (demo)
 book-benefit-data contract --version v2 # v2 (captured records)
 book-benefit-data demo --open-only
+book-benefit-data demo --version v2 --open-only  # v2 fixture with availability windows
 book-benefit-data demo --query "public-assistance"
 book-benefit-data validate src/book_benefit_data/demo.json
 python -m unittest discover -s tests -v
@@ -47,6 +48,12 @@ is included only while its explicit `availability` window has started and not
 ended (for example the existing-beneficiary welfare variant). This is an
 availability filter; it does not assert personal eligibility, selection
 probability, or a guaranteed payout.
+
+`demo --version v2` replays `demo-v2.json`, a synthetic v2 fixture with a
+continuous benefit (included), a scheduled window that starts 2026-10-01 00:00
+Bangkok time (included from `--as-of 2026-09-30T17:00:00Z`), an ended fixed
+window and an unknown window (both excluded). Its records were checked at the
+demo clock, so pass `--max-age-hours` when moving `--as-of` more than 72h later.
 
 Contract: `src/book_benefit_data/schema.json` (`benefit.v1`).
 Unknown amounts, currencies, eligibility and deadlines remain unknown. Cash,
