@@ -38,5 +38,6 @@ jobs:
       - name: CLI smoke (offline, synthetic fixture only)
         run: |
           book-benefit-data contract > /dev/null
+          book-benefit-data contract --version v2 > /dev/null
           book-benefit-data validate src/book_benefit_data/demo.json
           book-benefit-data demo --open-only > /dev/null

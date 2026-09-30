@@ -1,6 +1,6 @@
 # Upgrade plan — book-benefit-data
 
-Current state: **7/10** (was 5/10 before this pass). Offline contract, adapters and CLI are tested and linted in CI; live capture, source permission and consumers remain unverified by design.
+Current state: **7/10** (pass 1: 5 -> 7; pass 2: 7, consumer-facing CLI fix). Offline contract, adapters and CLI are tested and linted in CI; live capture, source permission and consumers remain unverified by design.
 
 ## Backlog
 
@@ -11,7 +11,7 @@ Current state: **7/10** (was 5/10 before this pass). Offline contract, adapters 
 - P2: Split the Thai welfare/water adapters out of the monolithic `normalize` into per-source functions with their own fixtures.
 - P2: Add a live-capture smoke job only behind an explicit manual trigger and reviewed source permission (never on push).
 
-## Done in this pass
+## Done in this pass (pass 1)
 
 - Added `.github/workflows/ci.yml`: `ruff check`, `pytest` and an offline CLI smoke (`contract`, `validate demo.json`, `demo --open-only`) on Python 3.10 and 3.13.
 - Added `[project.optional-dependencies] dev` (pytest, pinned ruff), `[tool.ruff]` and `[tool.pytest.ini_options]` to `pyproject.toml`; fixed import-order lint.
@@ -20,3 +20,11 @@ Current state: **7/10** (was 5/10 before this pass). Offline contract, adapters 
 - GOV.UK Content API adapter rejects non-object JSON with `ValueError` instead of crashing with `AttributeError` (runtime `records` replay only catches ValueError/KeyError/OSError/RuntimeError).
 - `--open-only` now honours explicit v2 `availability` windows as the README documented: a started continuous/scheduled benefit with no application deadline is included; not-yet-started or ended windows are excluded; freshness rules unchanged.
 - README source list now names all seven sources; stale GitHub/Chevening attribution removed.
+
+## Done in this pass (pass 2)
+
+- `contract --version {v1,v2}` (default v1, output unchanged) prints `schema-v2.json`, the
+  contract every captured record uses; before, consumers of live data could only get v1.
+  Unknown versions exit 2. Registry test, CI smoke and README updated (same change as the
+  sibling scholarship/freebie/grant/benefit CLIs).
+- Weak drift markers left unchanged: stronger phrases need a reviewed live capture.

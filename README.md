@@ -25,7 +25,8 @@ than copying the same award into several products.
 python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install -e .
-book-benefit-data contract
+book-benefit-data contract              # v1 (demo)
+book-benefit-data contract --version v2 # v2 (captured records)
 book-benefit-data demo --open-only
 book-benefit-data demo --query "public-assistance"
 book-benefit-data validate src/book_benefit_data/demo.json
