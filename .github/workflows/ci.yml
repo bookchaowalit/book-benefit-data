@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: lint and tests (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        # Lowest supported (requires-python) and a current release.
+        python-version: ["3.10", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Install package with dev tools
+        run: python -m pip install -e ".[dev]"
+      - name: Lint
+        run: ruff check .
+      - name: Tests (offline)
+        run: python -m pytest -q
+      - name: CLI smoke (offline, synthetic fixture only)
+        run: |
+          book-benefit-data contract > /dev/null
+          book-benefit-data contract --version v2 > /dev/null
+          book-benefit-data validate src/book_benefit_data/demo.json
+          book-benefit-data demo --open-only > /dev/null
+          book-benefit-data validate src/book_benefit_data/demo-v2.json
+          book-benefit-data demo --version v2 --open-only > /dev/null

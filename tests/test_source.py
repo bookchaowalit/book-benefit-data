@@ -1,8 +1,9 @@
 import base64
 import json
 import unittest
+
 from book_benefit_data.capture import normalize, source_config
-from book_benefit_data.cli import resource, validate
+from book_benefit_data.cli import filter_items, resource, validate
 
 
 class SourceTests(unittest.TestCase):
@@ -73,5 +74,37 @@ class SourceTests(unittest.TestCase):
         self.assertEqual(data['items'][0]['category'],'utility-support')
         self.assertEqual(data['items'][0]['value'],{'kind':'credit','amount':100,'currency':'THB','guaranteed':False})
         self.assertEqual(data['items'][0]['availability']['kind'],'continuous')
+
+    def welfare_payload(self, checked_at):
+        raw=('รัฐบาลไทย โครงการสวัสดิการแห่งรัฐ ปี 2569 '
+             'ผู้มีสิทธิรายเดิมเริ่มใช้สิทธิฯ ได้ตั้งแต่วันที่ 1 สิงหาคม 2569 '
+             'ผู้มีสิทธิรายใหม่เริ่มใช้สิทธิฯ ได้ตั้งแต่วันที่ 1 ตุลาคม 2569').encode()
+        data=normalize(raw,source_config('thaigov-state-welfare-2569'),checked_at)
+        for item in data['items']:
+            item['provenance'].update(raw_object_key='landing/test',bronze_manifest_key='control/manifests/test')
+        return data
+
+    def test_open_only_includes_started_continuous_benefit(self):
+        data=self.welfare_payload('2026-09-07T00:00:00Z')
+        found=filter_items(data,'2026-09-08T00:00:00Z',open_only=True)
+        self.assertEqual([item['id'] for item in found],['thaigov-state-welfare-2569:existing'])
+
+    def test_open_only_includes_scheduled_benefit_once_started(self):
+        data=self.welfare_payload('2026-10-01T06:00:00Z')
+        found=filter_items(data,'2026-10-02T00:00:00Z',open_only=True)
+        self.assertEqual(len(found),2)
+
+    def test_open_only_still_rejects_stale_or_ended_availability(self):
+        data=self.welfare_payload('2026-09-07T00:00:00Z')
+        self.assertEqual(filter_items(data,'2026-09-11T00:00:00Z',open_only=True),[])
+        data['items'][0]['availability']['ends_at']='2026-09-07T12:00:00Z'
+        self.assertEqual(filter_items(data,'2026-09-08T00:00:00Z',open_only=True),[])
+
+    def test_open_only_requires_explicit_availability_start(self):
+        data=self.welfare_payload('2026-09-07T00:00:00Z')
+        for item in data['items']:
+            item['availability']={'kind':'unknown','starts_at':None,'ends_at':None}
+        self.assertEqual(filter_items(data,'2026-09-08T00:00:00Z',open_only=True),[])
+
 
 if __name__=='__main__': unittest.main()

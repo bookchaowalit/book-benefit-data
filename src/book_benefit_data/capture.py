@@ -1,13 +1,12 @@
 """One explicit official source; all unsupported facts remain unknown."""
-import base64
 import argparse
 import json
 import os
 import re
 import sys
-from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
+
 from .cli import resource, validate
 
 
@@ -15,9 +14,9 @@ class Text(HTMLParser):
     def __init__(self):
         super().__init__(); self.parts=[]; self.hidden=0
     def handle_starttag(self, tag, attrs):
-        if tag in {'script','style'}: self.hidden += 1
+        if tag in {'script','style','noscript','svg'}: self.hidden += 1
     def handle_endtag(self, tag):
-        if tag in {'script','style'}: self.hidden = max(0,self.hidden-1)
+        if tag in {'script','style','noscript','svg'}: self.hidden = max(0,self.hidden-1)
     def handle_data(self, value):
         if not self.hidden: self.parts.append(value)
 
@@ -71,6 +70,8 @@ def normalize(raw, source, checked_at):
     variants=None
     if source['access']=='govuk-api':
         body=json.loads(raw)
+        if not isinstance(body,dict):
+            raise ValueError('unexpected GOV.UK document')
         if body.get('base_path') != source['source_url'].removeprefix('https://www.gov.uk') or not isinstance(body.get('details'),dict):
             raise ValueError('unexpected GOV.UK document')
         title=body.get('title')
@@ -78,16 +79,6 @@ def normalize(raw, source, checked_at):
         if title != expected: raise ValueError('source title drift')
         eligibility='UK program; read current eligibility and residence or organization requirements at the official source.'
         if source['domain']=='benefit': terms['jurisdiction']='United Kingdom'
-    elif source['access']=='github-api':
-        body=json.loads(raw)
-        if body.get('encoding')!='base64' or body.get('name')!='about-github-education-for-students.md':
-            raise ValueError('unexpected GitHub content')
-        text=base64.b64decode(''.join(body['content'].split()),validate=True).decode('utf-8')
-        if 'title: About GitHub Education for students' not in text or 'student' not in text.lower():
-            raise ValueError('student benefits source drift')
-        title='GitHub Education student benefits'
-        terms['delivery_kind']='access'
-        eligibility='Student verification and current GitHub Education requirements apply; partner offers have separate terms.'
     elif source['id'] in {'thaigov-state-welfare-2569','thaigov-water-support-2569'}:
         parser=Text(); parser.feed(raw.decode('utf-8'))
         text=' '.join(' '.join(parser.parts).split())
@@ -125,20 +116,7 @@ def normalize(raw, source, checked_at):
             eligibility='State Welfare Card 2569 utility support; registration, household and billing conditions apply before the water-bill credit is applied.'
             availability={'kind':'continuous','starts_at':'2026-07-20T00:00:00Z','ends_at':None}
     else:
-        parser=Text(); parser.feed(raw.decode('utf-8'))
-        text=' '.join(' '.join(parser.parts).split())
-        if 'Chevening in Thailand' not in text:
-            raise ValueError('Chevening source drift or challenge page')
-        title='Chevening in Thailand'
-        countries=['TH']
-        terms['study_level']='postgraduate'
-        eligibility='Thailand program; nationality alone does not establish eligibility. Verify all Chevening requirements.'
-        match=re.search(r'Open for applications until (\d{1,2} [A-Za-z]+ \d{4}), at (\d{2}:\d{2}) \(UTC\)',text)
-        if match:
-            cutoff=datetime.strptime(match[1]+' '+match[2],'%d %B %Y %H:%M').replace(tzinfo=timezone.utc)
-            deadline={'kind':'fixed','at':cutoff.isoformat().replace('+00:00','Z')}
-            status='open' if cutoff > datetime.fromisoformat(checked_at.replace('Z','+00:00')) else 'closed'
-        elif re.search(r'Applications (?:are |have )?closed',text,re.I): status='closed'
+        raise ValueError('unknown benefit source')
     if variants is None:
         variants=[{'suffix':'','title':title,'availability':availability}]
     items=[]
@@ -180,7 +158,7 @@ def main(argv=None):
         print('Shared discovery runtime is unavailable.',file=sys.stderr)
         return 2
     sys.path.insert(0,str(runtime))
-    from discovery.capture_runtime import run, VERSION
+    from discovery.capture_runtime import VERSION, run
     if VERSION != 1: raise RuntimeError('unsupported shared capture runtime')
     return run(source_config(selected.source_id),normalize,validate,remaining)
 
